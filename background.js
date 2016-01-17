@@ -4,9 +4,19 @@
 
 var urlText, titleText, hostText;
 
+
+chrome.extension.onConnect.addListener(function(port) {
+    port.onMessage.addListener(function(msg) {
+        //port.postMessage("Hi Popup.js");
+        addPost(msg);
+    });
+
+});
+
 chrome.browserAction.onClicked.addListener(function(tab) {
     // No tabs or host permissions needed!
     //alert("In background");
+
 
 
 });
@@ -15,20 +25,6 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
     urlText = message.urlText;
     titleText = message.titleText;
     hostText = message.hostText;
-
-    var ddp = new MeteorDdp("ws://localhost:3000/websocket");
-    ddp.connect().then(function() {
-        ddp.subscribe("posts");
-
-        var post = {
-            title: titleText,
-            url: urlText,
-            category: "Business"
-        };
-        ddp.call('postInsert',[post]);
-
-    });
-
 
 
 
@@ -44,39 +40,17 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
     }
 });
 
+addPost = function(category){
+    var ddp = new MeteorDdp("ws://readgoodstuff.meteor.com/websocket");
+    ddp.connect().then(function() {
+        ddp.subscribe("posts");
+        console.log("in addpost " + category);
+        var post = {
+            title: titleText,
+            url: urlText,
+            category: category
+        };
+        ddp.call('postInsert',[post]);
 
-/*chrome.browserAction.onClicked.addListener(function(tab){
-    // does the localstorage boolean say true
-    alert("test");
-    console.log("Hello");
-    /*
-    //localStorage.setItem("loggedIn",true);
-
-    //var pageUrl = document.URL;
-    //console.log("URL = " + pageUrl);
-    //var pageHostName = window.location.hostname;
-    //console.log("Hostname = " + pageHostName);
-
-    //if(localStorage.getItem("loggedIn")){
-        // if yes
-        //chrome.browserAction.setPopup("category.html");
-        // connect to the database via ddp
-        /*var ddp = new MeteorDdp("ws://localhost:3000/websocket");
-        ddp.connect().then(function(){
-            ddp.subscribe("posts");
-            ddp.call("insert",[])
-        })
-        // insert a new post and use the url of the current tab
-    //}
-    else{
-        chrome.browserAction.setPopup("popup.html");
-    }
-
-
-    // if no
-        // set popup page
-        // on clicking login
-            // connect to the server and call loginfromExtension
-            // set localstorage to true
-            // insert the page
-});*/
+    });
+};
