@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
         //alert("In background loggedIn");
     }
     else{
-        console.log("In background loggedOut");
+        //console.log("In background loggedOut");
         //alert("In background loggedOut");
         chrome.browserAction.setPopup({popup:"category.html"});
 
@@ -41,7 +41,8 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 });
 
 addPost = function(category){
-    var ddp = new MeteorDdp("ws://readgoodstuff.meteor.com/websocket");
+    //var ddp = new MeteorDdp("ws://readgoodstuff.meteor.com/websocket");
+    var ddp = new MeteorDdp("ws://localhost:3000/websocket");
     ddp.connect().then(function() {
         ddp.subscribe("posts");
         console.log("in addpost " + category);
@@ -51,6 +52,5 @@ addPost = function(category){
             category: category
         };
         ddp.call('postInsert',[post]);
-
     });
 };
