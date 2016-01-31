@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
     titleText = message.titleText;
     hostText = message.hostText;
 
-    chrome.cookies.get({ url: 'http://localhost:3000', name: 'userName' },
+    chrome.cookies.get({ url: /*'http://localhost:3000'*/'http://readgoodstuff.meteor.com', name: 'userName' },
         function (cookie) {
             cookieUser = cookie.value;
             if (cookie) {
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
             }
         });
 
-    chrome.cookies.get({ url: 'http://localhost:3000', name: 'userId' },
+    chrome.cookies.get({ url: /*'http://localhost:3000'*/'http://readgoodstuff.meteor.com', name: 'userId' },
         function (cookie) {
             cookieUserId = cookie.value;
             if (cookie) {
@@ -62,8 +62,8 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 });
 
 addPost = function(category){
-    //var ddp = new MeteorDdp("ws://readgoodstuff.meteor.com/websocket");
-    var ddp = new MeteorDdp("ws://localhost:3000/websocket");
+    var ddp = new MeteorDdp("ws://readgoodstuff.meteor.com/websocket");
+    //var ddp = new MeteorDdp("ws://localhost:3000/websocket");
     ddp.connect().then(function() {
         ddp.subscribe("posts");
         console.log("in addpost " + category);

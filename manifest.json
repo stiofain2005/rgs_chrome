@@ -5,6 +5,7 @@
   "permissions": [
     "activeTab",
     "http://localhost:3000/",
+    "http://readgoodstuff.meteor.com/",
     "cookies"
   ],
 
