@@ -2,7 +2,7 @@
  * Created by stephencampbell on 16/01/2016.
  */
 
-var urlText, titleText, hostText;
+var urlText, titleText, hostText, cookieUser, cookieUserId;
 
 
 chrome.extension.onConnect.addListener(function(port) {
@@ -26,6 +26,27 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
     titleText = message.titleText;
     hostText = message.hostText;
 
+    chrome.cookies.get({ url: 'http://localhost:3000', name: 'userName' },
+        function (cookie) {
+            cookieUser = cookie.value;
+            if (cookie) {
+                console.log(cookie.value);
+            }
+            else {
+                console.log('Can\'t get cookie! Check the name!');
+            }
+        });
+
+    chrome.cookies.get({ url: 'http://localhost:3000', name: 'userId' },
+        function (cookie) {
+            cookieUserId = cookie.value;
+            if (cookie) {
+                console.log(cookie.value);
+            }
+            else {
+                console.log('Can\'t get cookie! Check the name!');
+            }
+        });
 
 
     if(message.loggedIn === "true"){
@@ -49,7 +70,10 @@ addPost = function(category){
         var post = {
             title: titleText,
             url: urlText,
-            category: category
+            category: category,
+            clicks:0,
+            userId:cookieUserId,
+            user: cookieUser
         };
         ddp.call('postInsert',[post]);
     });
