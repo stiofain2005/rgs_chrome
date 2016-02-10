@@ -1,7 +1,7 @@
 {
   "name": "RGS",
   "description": "RGS",
-  "version": "2.0",
+  "version": "0.0.0.1",
   "permissions": [
     "activeTab",
     "http://localhost:3000/",
